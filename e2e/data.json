@@ -1,0 +1,4 @@
+{"questions":[
+ {"id":"q1","text":"Capital of France?","options":[{"key":"A","text":"Paris"},{"key":"B","text":"Rome"},{"key":"C","text":"Madrid"}],"defaultDurationSec":15},
+ {"id":"q2","text":"2 + 2?","options":[{"key":"A","text":"3"},{"key":"B","text":"4"}]}
+]}
