@@ -13,3 +13,13 @@ Frontend env: `NEXT_PUBLIC_API_URL` (http://localhost:8080).
 End-to-end smoke test (needs both apps running and Playwright): `NODE_PATH=$(npm root -g) node e2e/smoke.mjs`.
 
 Host link is `/admin/{id}?key={hostKey}`; the key is the only credential (no password).
+
+## Docker Hub → Render
+
+```
+DOCKERHUB_USER=me API_URL=https://quiz-api.onrender.com ./scripts/docker-publish.sh [tag]
+```
+
+Builds `linux/amd64` images for `backend/` and `frontend/`, pushes them to Docker Hub and prints the Render settings.
+Deploy the backend first to learn its URL, then build the frontend with it as `API_URL` (it is inlined at build time).
+Set the backend's `PUBLIC_BASE_URL` and `ALLOWED_ORIGINS` to the frontend's Render URL. Use `TARGET=backend|frontend` to push one image.
