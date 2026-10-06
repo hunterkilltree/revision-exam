@@ -12,7 +12,7 @@ export function LockedResultsView({ s }: { s: Snapshot }) {
           <button key={o.key} className="opt" disabled aria-pressed={s.myAnswer === o.key}><span className="k">{o.key}</span>{o.text}</button>
         ))}
       </div>
-      <BarChart options={q.options} tally={s.tally ?? {}} mine={s.myAnswer} />
+      <BarChart options={q.options} tally={s.tally ?? {}} mine={s.myAnswer} correct={s.correctKey} />
       {!s.myAnswer && <p className="muted">You didn&apos;t answer this one.</p>}
     </div>
   );

@@ -361,6 +361,7 @@ func (h *Hub) view(c *Conn) View {
 	}
 	if r.phase == PhaseResults || (r.phase == PhaseComplete && c.Admin) {
 		v.Tally = r.tally(r.current)
+		v.CorrectKey = q.CorrectKey
 	}
 	if c.Admin {
 		v.Role = "admin"
@@ -368,6 +369,9 @@ func (h *Hub) view(c *Conn) View {
 		v.PastTallies = map[string]map[string]int{}
 		for i, qq := range r.set.Questions {
 			v.Questions[i] = ListItem{ID: qq.ID, Text: qq.Text, Status: r.statuses[i], Options: qq.Options, DefaultDurationSec: qq.DefaultDurationSec}
+			if r.statuses[i] == Finished {
+				v.Questions[i].CorrectKey = qq.CorrectKey
+			}
 			if r.statuses[i] == Finished {
 				v.PastTallies[qq.ID] = r.tally(i)
 			}

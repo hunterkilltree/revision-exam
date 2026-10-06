@@ -14,6 +14,7 @@ type ListItem struct {
 	Status QStatus `json:"status"`
 	// Options and DefaultDurationSec are only sent to the admin.
 	Options            []quiz.Option `json:"options,omitempty"`
+	CorrectKey         string        `json:"correctKey,omitempty"` // only once finished
 	DefaultDurationSec *int          `json:"defaultDurationSec,omitempty"`
 }
 
@@ -33,6 +34,7 @@ type View struct {
 	Joined      bool                      `json:"joined,omitempty"`
 	MyAnswer    string                    `json:"myAnswer,omitempty"`
 	Tally       map[string]int            `json:"tally,omitempty"`
+	CorrectKey  string                    `json:"correctKey,omitempty"`  // only in results/complete
 	Questions   []ListItem                `json:"questions,omitempty"`   // admin only
 	PastTallies map[string]map[string]int `json:"pastTallies,omitempty"` // admin only
 }

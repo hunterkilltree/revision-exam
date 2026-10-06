@@ -18,6 +18,7 @@ The admin console loads one `data.json` file per session; nothing about the ques
 | `questions[].id` | string | Yes | Stable unique id — the key used for answers and tallies. |
 | `questions[].text` | string | Yes | The question prompt shown to admin and clients. |
 | `questions[].options` | array | Yes | 2–6 choices, each `{ "key": "A", "text": "..." }`. |
+| `questions[].correctKey` | string | No | Key of the correct option; must match one of `options[].key`. Shown (highlighted) on the results screen for admin and clients once the question is locked, never while it is running. |
 | `questions[].points` | number | No | Carried through for later scoring; unused by the live-tally feature itself. |
 | `questions[].defaultDurationSec` | number | No | Pre-selects a timer option in the admin console (15/10/30/60); admin can still override before starting. |
 

@@ -50,3 +50,15 @@ func TestInvalid(t *testing.T) {
 		}
 	}
 }
+
+func TestCorrectKeyMustMatchAnOption(t *testing.T) {
+	ok := `{"questions":[{"id":"q1","text":"x","options":[{"key":"A","text":"a"},{"key":"B","text":"b"}],"correctKey":"B"}]}`
+	set, errs := ParseBytes([]byte(ok))
+	if errs != nil || set.Questions[0].CorrectKey != "B" {
+		t.Fatalf("valid correctKey rejected: %v", errs)
+	}
+	bad := `{"questions":[{"id":"q1","text":"x","options":[{"key":"A","text":"a"},{"key":"B","text":"b"}],"correctKey":"Z"}]}`
+	if _, errs := ParseBytes([]byte(bad)); len(errs) != 1 || errs[0].Path != "questions[0].correctKey" {
+		t.Fatalf("expected correctKey error, got %v", errs)
+	}
+}

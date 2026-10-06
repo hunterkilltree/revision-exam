@@ -6,27 +6,33 @@ export function percentages(tally: Tally, keys: string[]) {
 }
 
 /** Pure CSS bars, with a text table fallback for screen readers. */
-export function BarChart({ options, tally, mine }: { options: Option[]; tally: Tally; mine?: string }) {
+export function BarChart({ options, tally, mine, correct }: { options: Option[]; tally: Tally; mine?: string; correct?: string }) {
   const { total, pct } = percentages(tally, options.map((o) => o.key));
   return (
     <div>
       {total === 0 && <p className="muted"><strong>No answers</strong> — nobody picked an option.</p>}
       <div className="bars" aria-hidden="true">
         {options.map((o) => (
-          <div key={o.key} className={`bar ${mine === o.key ? "mine" : ""}`}>
+          <div key={o.key} className={`bar ${mine === o.key ? "mine" : ""} ${correct === o.key ? "correct" : ""}`}>
             <div className="lbl">
-              <span><strong>{o.key}</strong> {o.text}{mine === o.key && " ✓ your pick"}</span>
+              <span><strong>{o.key}</strong> {o.text}{mine === o.key && " ✓ your pick"}{correct === o.key && " ★ correct answer"}</span>
               <span className="mono">{tally[o.key] ?? 0} · {pct(o.key)}%</span>
             </div>
             <div className="track"><div className="fill" style={{ width: `${pct(o.key)}%` }} /></div>
           </div>
         ))}
       </div>
+      {correct && (
+        <p className="correct-note" role="status">
+          Correct answer: <strong>{correct}. {options.find((o) => o.key === correct)?.text}</strong>
+          {mine !== undefined && mine !== "" && <> — you were {mine === correct ? "right ✓" : "wrong ✗"}</>}
+        </p>
+      )}
       <table className="sr">
         <caption>Results</caption>
         <tbody>
           {options.map((o) => (
-            <tr key={o.key}><th>{o.key}. {o.text}</th><td>{tally[o.key] ?? 0} answers, {pct(o.key)}%</td></tr>
+            <tr key={o.key}><th>{o.key}. {o.text}{correct === o.key && " (correct answer)"}</th><td>{tally[o.key] ?? 0} answers, {pct(o.key)}%</td></tr>
           ))}
         </tbody>
       </table>

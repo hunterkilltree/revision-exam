@@ -25,6 +25,7 @@ type Question struct {
 	ID                 string   `json:"id"`
 	Text               string   `json:"text"`
 	Options            []Option `json:"options"`
+	CorrectKey         string   `json:"correctKey,omitempty"`
 	Points             *float64 `json:"points,omitempty"`
 	DefaultDurationSec *int     `json:"defaultDurationSec,omitempty"`
 }
@@ -101,6 +102,20 @@ func ParseBytes(raw []byte) (*Set, []FieldError) {
 			q.Text = s
 		}
 		q.Options = parseOptions(it["options"], p+".options", add)
+		if v, ok := it["correctKey"]; ok && !isNull(v) {
+			s, isStr := str(v)
+			found := false
+			for _, o := range q.Options {
+				if o.Key == s {
+					found = true
+				}
+			}
+			if !isStr || !found {
+				add(p+".correctKey", "must match one of the option keys")
+			} else {
+				q.CorrectKey = s
+			}
+		}
 		if v, ok := it["points"]; ok && !isNull(v) {
 			var f float64
 			if err := json.Unmarshal(v, &f); err != nil || f < 0 {
