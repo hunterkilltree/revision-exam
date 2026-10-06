@@ -1,10 +1,19 @@
 name: docker-publish
 
 # Manual only: Actions tab -> docker-publish -> Run workflow.
-# Builds both images and pushes them as :latest (plus a :<short-sha> tag) to Docker Hub.
+# Builds the selected image(s) (both / backend / frontend) and pushes them as :latest (plus a :<short-sha> tag) to Docker Hub.
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: "What to build and push"
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - backend
+          - frontend
       api_url:
         description: "Backend URL baked into the frontend (NEXT_PUBLIC_API_URL). Defaults to repo variable NEXT_PUBLIC_API_URL."
         required: false
@@ -12,6 +21,7 @@ on:
 
 jobs:
   backend:
+    if: inputs.target == 'both' || inputs.target == 'backend'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +41,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=backend
 
   frontend:
+    if: inputs.target == 'both' || inputs.target == 'frontend'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
