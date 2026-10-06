@@ -7,7 +7,7 @@ export function ResultsPanel({ item, tally, isLast, canAdvance, onNext }: {
   return (
     <div className="stack">
       <h2>Results</h2>
-      <BarChart options={item.options ?? []} tally={tally} />
+      <BarChart options={item.options ?? []} tally={tally} correct={item.correctKey} />
       {canAdvance && (
         <button className="btn primary" onClick={onNext}>{isLast ? "Finish quiz" : "Next question"}</button>
       )}

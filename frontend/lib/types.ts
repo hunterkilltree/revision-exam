@@ -7,7 +7,7 @@ export interface Option { key: string; text: string }
 export interface QuestionView { id: string; text: string; options: Option[] }
 export interface ListItem {
   id: string; text: string; status: QStatus;
-  options?: Option[]; defaultDurationSec?: number;
+  options?: Option[]; defaultDurationSec?: number; correctKey?: string;
 }
 export interface Timer { durationSec: number; startedAt: number; status: "idle" | "running" | "finished" }
 
@@ -26,6 +26,7 @@ export interface View {
   joined?: boolean;
   myAnswer?: string;
   tally?: Tally;
+  correctKey?: string;
   questions?: ListItem[];
   pastTallies?: Record<string, Tally>;
 }
